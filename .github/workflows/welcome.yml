@@ -4,6 +4,9 @@ on:
     types: [opened]
 permissions:
   pull-requests: write
+
+env:
+  DAY_OF_WEEK: Monday
 jobs:
   welcome:
     name: Post welcome comment
@@ -15,3 +18,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
+  prod-check:
+    # contex variables all lowercase, default envirotment variables all upppercase
+    if: github.ref == 'refs/heads/main' # contect variable ant any point, like here befor the runner is executed
+    runs-on: ubuntu-latest
+    steps:
+      - name: use vari
+        run: echo "Deploying to production server on branch $GITHUB_REF" #Default environment variables  inside the runner
+      - run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"  #custome environment variables
+        env:
+          First_Name: Mona
